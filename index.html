@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stock Analysis</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Stock Analysis">
+  <meta name="author" content="Palash Jain">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Stock Analysis</h1>
+    <h2>An app to visualize stock prices</h2>
+    <p>Palash Jain<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>The Idea</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>A lightweight app to view stock prices for a handful of companies over any time interval since 2010.</p>
+
+<p><img src="img.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" width="1048px" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The Features</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The app allows a user to input:</p>
+
+<ul>
+<li>Select one of the five available companies - a selectInput.</li>
+<li>Specify a start date - a dateInput.</li>
+<li>Specify an end date - a dateInput.</li>
+</ul>
+
+<p>The app outputs:</p>
+
+<ul>
+<li>A line chart to visualize stock prices across the interval.</li>
+<li>Stock price at start date.</li>
+<li>Stock price at end date.</li>
+<li>How much has the stock price risen/decreased by in the interval (as percentage).</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>How does the app work?</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>It uses the Quandl R package to download stock prices for the available companies as shown below.</p>
+
+<pre><code class="r">library(Quandl)
+library(kableExtra)
+Quandl.api_key(&#39;U4bZCz7B3NsBiXcPQsL2&#39;)
+aapl&lt;-Quandl(&#39;WIKI/AAPL&#39;)
+kable(head(aapl)) %&gt;%
+  scroll_box(width = &#39;1000px&#39;,height = &#39;200px&#39;)
+</code></pre>
+
+<div style="border: 1px solid #ddd; padding: 5px; overflow-y: scroll; height:200px; overflow-x: scroll; width:1000px; "><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Date </th>
+   <th style="text-align:right;"> Open </th>
+   <th style="text-align:right;"> High </th>
+   <th style="text-align:right;"> Low </th>
+   <th style="text-align:right;"> Close </th>
+   <th style="text-align:right;"> Volume </th>
+   <th style="text-align:right;"> Ex-Dividend </th>
+   <th style="text-align:right;"> Split Ratio </th>
+   <th style="text-align:right;"> Adj. Open </th>
+   <th style="text-align:right;"> Adj. High </th>
+   <th style="text-align:right;"> Adj. Low </th>
+   <th style="text-align:right;"> Adj. Close </th>
+   <th style="text-align:right;"> Adj. Volume </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 2018-03-27 </td>
+   <td style="text-align:right;"> 173.68 </td>
+   <td style="text-align:right;"> 175.15 </td>
+   <td style="text-align:right;"> 166.92 </td>
+   <td style="text-align:right;"> 168.340 </td>
+   <td style="text-align:right;"> 38962839 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 173.68 </td>
+   <td style="text-align:right;"> 175.15 </td>
+   <td style="text-align:right;"> 166.92 </td>
+   <td style="text-align:right;"> 168.340 </td>
+   <td style="text-align:right;"> 38962839 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2018-03-26 </td>
+   <td style="text-align:right;"> 168.07 </td>
+   <td style="text-align:right;"> 173.10 </td>
+   <td style="text-align:right;"> 166.44 </td>
+   <td style="text-align:right;"> 172.770 </td>
+   <td style="text-align:right;"> 36272617 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 168.07 </td>
+   <td style="text-align:right;"> 173.10 </td>
+   <td style="text-align:right;"> 166.44 </td>
+   <td style="text-align:right;"> 172.770 </td>
+   <td style="text-align:right;"> 36272617 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2018-03-23 </td>
+   <td style="text-align:right;"> 168.39 </td>
+   <td style="text-align:right;"> 169.92 </td>
+   <td style="text-align:right;"> 164.94 </td>
+   <td style="text-align:right;"> 164.940 </td>
+   <td style="text-align:right;"> 40248954 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 168.39 </td>
+   <td style="text-align:right;"> 169.92 </td>
+   <td style="text-align:right;"> 164.94 </td>
+   <td style="text-align:right;"> 164.940 </td>
+   <td style="text-align:right;"> 40248954 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2018-03-22 </td>
+   <td style="text-align:right;"> 170.00 </td>
+   <td style="text-align:right;"> 172.68 </td>
+   <td style="text-align:right;"> 168.60 </td>
+   <td style="text-align:right;"> 168.845 </td>
+   <td style="text-align:right;"> 41051076 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 170.00 </td>
+   <td style="text-align:right;"> 172.68 </td>
+   <td style="text-align:right;"> 168.60 </td>
+   <td style="text-align:right;"> 168.845 </td>
+   <td style="text-align:right;"> 41051076 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2018-03-21 </td>
+   <td style="text-align:right;"> 175.04 </td>
+   <td style="text-align:right;"> 175.09 </td>
+   <td style="text-align:right;"> 171.26 </td>
+   <td style="text-align:right;"> 171.270 </td>
+   <td style="text-align:right;"> 35247358 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 175.04 </td>
+   <td style="text-align:right;"> 175.09 </td>
+   <td style="text-align:right;"> 171.26 </td>
+   <td style="text-align:right;"> 171.270 </td>
+   <td style="text-align:right;"> 35247358 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 2018-03-20 </td>
+   <td style="text-align:right;"> 175.24 </td>
+   <td style="text-align:right;"> 176.80 </td>
+   <td style="text-align:right;"> 174.94 </td>
+   <td style="text-align:right;"> 175.240 </td>
+   <td style="text-align:right;"> 19314039 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 175.24 </td>
+   <td style="text-align:right;"> 176.80 </td>
+   <td style="text-align:right;"> 174.94 </td>
+   <td style="text-align:right;"> 175.240 </td>
+   <td style="text-align:right;"> 19314039 </td>
+  </tr>
+</tbody>
+</table></div>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>How does the app work? (contd.)</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>It allows the user to select one of the five available companies.</p>
+
+<p><img src="img1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" width="1048px" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>How does the app work? (contd.)</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>It allows the user to select start and end date between 2010 and yesterday&#39;s date.</p>
+
+<p><img src="img2.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" width="1048px" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>App documentation and Links</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The documentation and the files for the app can be found at:</p>
+
+<ul>
+<li><a href="https://github.com/palashisback/Stock_analysis_shiny">https://github.com/palashisback/Stock_analysis_shiny</a></li>
+</ul>
+
+<p>The app itself can be found at:</p>
+
+<ul>
+<li><a href="https://palashisback.shinyapps.io/Stock_analysis/">https://palashisback.shinyapps.io/Stock_analysis/</a></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='The Idea'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='The Features'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='How does the app work?'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='How does the app work? (contd.)'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='How does the app work? (contd.)'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='App documentation and Links'>
+         6
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
